@@ -1,8 +1,28 @@
 import React from "react";
 import { getCurrentUser } from "@/lib/appwrite/api";
-import { IContextType, IUser } from "@/types";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { IUser } from "@/types";
+
+// export const INITIAL_USER = {
+//   id: "",
+//   name: "",
+//   username: "",
+//   email: "",
+//   imageUrl: "",
+//   bio: "",
+// };
+
+// const INITIAL_STATE = {
+//   user: INITIAL_USER,
+//   isLoading: false,
+//   isAuthenticated: false,
+//   setUser: () => {},
+//   setIsAuthenticated: () => {},
+//   checkAuthUser: async () => false as boolean,
+// };
+
+// const AuthContext = createContext<IContextType>(INITIAL_STATE);
 
 export const INITIAL_USER = {
   id: "",
@@ -20,6 +40,15 @@ const INITIAL_STATE = {
   setUser: () => {},
   setIsAuthenticated: () => {},
   checkAuthUser: async () => false as boolean,
+};
+
+type IContextType = {
+  user: IUser;
+  isLoading: boolean;
+  setUser: React.Dispatch<React.SetStateAction<IUser>>;
+  isAuthenticated: boolean;
+  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
+  checkAuthUser: () => Promise<boolean>;
 };
 
 const AuthContext = createContext<IContextType>(INITIAL_STATE);

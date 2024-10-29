@@ -1,4 +1,4 @@
-import { ID, Query } from "appwrite";
+import { ID, ImageGravity, Query } from "appwrite";
 
 import { INewPost, INewUser, IUpdatePost, IUpdateUser } from "@/types";
 import { account, appwriteConfig, avatars, databases, storage } from "./config";
@@ -14,7 +14,7 @@ export async function createUserAccount(user: INewUser) {
 
     if (!newAccount) throw Error;
 
-    const avatarUrl = avatars.getInitials(user.name);
+    const avatarUrl = new URL(avatars.getInitials(user.name));
 
     const newUser = await saveUserToDB({
       accountId: newAccount.$id,
@@ -156,7 +156,7 @@ export function getFilePreview(fileId: string) {
       fileId,
       2000,
       2000,
-      "top",
+      ImageGravity.Top,
       100
     );
 
@@ -273,7 +273,11 @@ export async function updatePost(post: IUpdatePost) {
         throw Error;
       }
 
-      image = { ...image, imageUrl: fileUrl, imageId: uploadedFile.$id };
+      image = {
+        ...image,
+        imageUrl: new URL(fileUrl),
+        imageId: uploadedFile.$id,
+      };
     }
 
     // Convert tags into array
